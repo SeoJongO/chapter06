@@ -30,22 +30,34 @@ public class Client {
 		OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
 		BufferedWriter bw = new BufferedWriter(osw);
 
-		
-		Scanner sc = new Scanner(System.in);
-		String str = sc.nextLine();
-
-		bw.write(str);
-		bw.newLine();
-		bw.flush();
-
 		// 받기용
 		InputStream is = socket.getInputStream();
 		InputStreamReader isr = new InputStreamReader(is, "UTF-8");
 		BufferedReader br = new BufferedReader(isr);
 
-		String reMsg = br.readLine();
-		System.out.println("Server:[" + reMsg + "]");
+		// 보내기
+		Scanner sc = new Scanner(System.in);
+		
+		while (true) {
 
+			String str = sc.nextLine();
+
+			bw.write(str);
+			if ("/q".equals(str)) {
+				System.out.println("[접속 종료되었습니다.]");
+				break;
+			}
+			bw.newLine();
+			bw.flush();
+
+			String reMsg = br.readLine();
+			System.out.println("Server:[" + reMsg + "]");
+
+		}
+
+		System.out.println("===================================");
+		System.out.println("<클라이언트 종료>");
+		
 		sc.close();
 		br.close();
 		bw.close();

@@ -31,17 +31,30 @@ public class Server {
 		InputStreamReader isr = new InputStreamReader(is, "UTF-8");
 		BufferedReader br = new BufferedReader(isr);
 
-		String msg = br.readLine();
-		System.out.println("받은 메시지:" + msg);
-
 		// 보내기용
 		OutputStream os = socket.getOutputStream();
 		OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
 		BufferedWriter bw = new BufferedWriter(osw);
 
-		bw.write(msg);
-		bw.newLine();
-		bw.flush();
+		while (true) {
+			
+			// 받기
+			String msg = br.readLine();
+			if (msg == null) {
+				System.out.println("[클라이언트가 연결을 종료했습니다.]");
+				break;
+			}
+			System.out.println("받은 메시지:" + msg);
+			
+			// 보내기
+			bw.write(msg);
+			bw.newLine();
+			bw.flush();
+
+		}
+		
+		System.out.println("===================================");
+		System.out.println("<서버종료>");
 
 		bw.close();
 		br.close();
